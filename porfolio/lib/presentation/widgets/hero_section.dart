@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_animations/simple_animations.dart';
 import '../view_models/scroll_view_model.dart';
-import 'code_animation.dart';
 
 class HeroSection extends StatelessWidget {
   @override
@@ -20,32 +20,17 @@ class HeroSectionMobile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollViewModel = Provider.of<ScrollViewModel>(context, listen: false);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF5F5F7), Colors.white],
-        ),
-      ),
       child: Stack(
         children: [
-          Positioned.fill(child: CodeAnimatedBackground()),
+          Positioned.fill(child: ParticleBackground()),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFF007AFF), width: 2.0),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+                CircleAvatar(
+                  radius: 60,
+                  backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
                   ),
                 ),
                 SizedBox(height: 20),
@@ -62,57 +47,15 @@ class HeroSectionMobile extends StatelessWidget {
                     horizontal: 20,
                   ),
                   child: Text(
-                    "Senior Flutter Developer & Cross-Platform Expert",
-                    style: TextStyle(
-                      color: Color(0xFF86868B),
-                      fontSize: 16,
-                    ),
+                    "I build beautiful and high-performance apps with Flutter.",
+                    style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: 30),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 15,
-                  runSpacing: 15,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => scrollViewModel.scrollToSection(2),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF007AFF),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 30,
-                        ),
-                      ),
-                      child: Text(
-                        "View My Work",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => scrollViewModel.scrollToSection(5),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Color(0xFF007AFF),
-                        side: BorderSide(color: Color(0xFF007AFF)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 30,
-                        ),
-                      ),
-                      child: Text(
-                        "Contact Me",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
+                ElevatedButton(
+                  onPressed: () => scrollViewModel.scrollToSection(2),
+                  child: Text("View My Work"),
                 ),
               ],
             ),
@@ -128,32 +71,17 @@ class HeroSectionTablet extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollViewModel = Provider.of<ScrollViewModel>(context, listen: false);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF5F5F7), Colors.white],
-        ),
-      ),
       child: Stack(
         children: [
-          Positioned.fill(child: CodeAnimatedBackground()),
+          Positioned.fill(child: ParticleBackground()),
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFF007AFF), width: 2.0),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+                CircleAvatar(
+                  radius: 75,
+                  backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
                   ),
                 ),
                 SizedBox(height: 20),
@@ -170,57 +98,15 @@ class HeroSectionTablet extends StatelessWidget {
                     horizontal: 40,
                   ),
                   child: Text(
-                    "Senior Flutter Developer & Cross-Platform Expert",
-                    style: TextStyle(
-                      color: Color(0xFF86868B),
-                      fontSize: 18,
-                    ),
+                    "I build beautiful and high-performance apps with Flutter.",
+                    style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(height: 30),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  spacing: 15,
-                  runSpacing: 15,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => scrollViewModel.scrollToSection(2),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF007AFF),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 30,
-                        ),
-                      ),
-                      child: Text(
-                        "View My Work",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    OutlinedButton(
-                      onPressed: () => scrollViewModel.scrollToSection(5),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Color(0xFF007AFF),
-                        side: BorderSide(color: Color(0xFF007AFF)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 30,
-                        ),
-                      ),
-                      child: Text(
-                        "Contact Me",
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ],
+                ElevatedButton(
+                  onPressed: () => scrollViewModel.scrollToSection(2),
+                  child: Text("View My Work"),
                 ),
               ],
             ),
@@ -236,32 +122,17 @@ class HeroSectionDesktop extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollViewModel = Provider.of<ScrollViewModel>(context, listen: false);
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF5F5F7), Colors.white],
-        ),
-      ),
       child: Stack(
         children: [
-          Positioned.fill(child: CodeAnimatedBackground()),
+          Positioned.fill(child: ParticleBackground()),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Color(0xFF007AFF), width: 2.0),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+                CircleAvatar(
+                  radius: 75,
+                  backgroundImage: NetworkImage(
+                    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80',
                   ),
                 ),
                 SizedBox(width: 40),
@@ -277,54 +148,13 @@ class HeroSectionDesktop extends StatelessWidget {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Senior Flutter Developer & Cross-Platform Expert",
-                      style: TextStyle(
-                        color: Color(0xFF86868B),
-                        fontSize: 18,
-                      ),
+                      "I build beautiful and high-performance apps with Flutter.",
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                     SizedBox(height: 30),
-                    Wrap(
-                      spacing: 15,
-                      runSpacing: 15,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () => scrollViewModel.scrollToSection(2),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Color(0xFF007AFF),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15,
-                              horizontal: 30,
-                            ),
-                          ),
-                          child: Text(
-                            "View My Work",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        OutlinedButton(
-                          onPressed: () => scrollViewModel.scrollToSection(5),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Color(0xFF007AFF),
-                            side: BorderSide(color: Color(0xFF007AFF)),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 15,
-                              horizontal: 30,
-                            ),
-                          ),
-                          child: Text(
-                            "Contact Me",
-                            style: TextStyle(fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
+                    ElevatedButton(
+                      onPressed: () => scrollViewModel.scrollToSection(2),
+                      child: Text("View My Work"),
                     ),
                   ],
                 ),
@@ -334,5 +164,45 @@ class HeroSectionDesktop extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ParticleBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return LoopAnimationBuilder(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: const Duration(seconds: 10),
+      builder: (context, value, child) {
+        return CustomPaint(
+          painter: ParticlePainter(value),
+        );
+      },
+    );
+  }
+}
+
+class ParticlePainter extends CustomPainter {
+  final double animationValue;
+
+  ParticlePainter(this.animationValue);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = Colors.white.withOpacity(0.1);
+
+    final particleCount = 100;
+
+    for (int i = 0; i < particleCount; i++) {
+      final x = (size.width * (i / particleCount) + animationValue * size.width) % size.width;
+      final y = (size.height * (i / particleCount) + animationValue * size.height) % size.height;
+
+      canvas.drawCircle(Offset(x, y), 1.0, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
   }
 }

@@ -46,34 +46,52 @@ class _CoolLaptopAnimationState extends State<CoolLaptopAnimation>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Transform(
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
-            ..rotateX(_animation.value * -0.5),
-          alignment: FractionalOffset.center,
-          child: Container(
-            width: 400,
-            height: 250,
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey[800]!, width: 2),
-            ),
-            child: Center(
-              child: Container(
-                width: 380,
-                height: 230,
-                decoration: BoxDecoration(
-                  color: Colors.grey[900],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Opacity(
-                  opacity: _animation.value,
-                  child: CodeAnimatedBackground(),
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            // Laptop Base
+            Container(
+              width: 400,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Colors.grey[800],
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
                 ),
               ),
             ),
-          ),
+            // Laptop Screen
+            Transform(
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.001)
+                ..rotateX(_animation.value * -1.5),
+              alignment: FractionalOffset.bottomCenter,
+              child: Container(
+                width: 400,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.grey[800]!, width: 2),
+                ),
+                child: Center(
+                  child: Container(
+                    width: 380,
+                    height: 230,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[900],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Opacity(
+                      opacity: _animation.value,
+                      child: CodeAnimatedBackground(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
       },
     );

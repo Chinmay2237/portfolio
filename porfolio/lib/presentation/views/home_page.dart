@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
+import 'package:porfolio/presentation/view_models/theme_provider.dart';
 import 'package:porfolio/presentation/widgets/about_section.dart';
 import 'package:porfolio/presentation/widgets/contact_section.dart';
 import 'package:porfolio/presentation/widgets/footer_section.dart';
@@ -17,9 +18,9 @@ class PortfolioHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollViewModel = Provider.of<ScrollViewModel>(context);
     final portfolioViewModel = Provider.of<PortfolioViewModel>(context);
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F7),
       body: Stack(
         children: [
           CustomScrollView(
@@ -33,16 +34,36 @@ class PortfolioHomePage extends StatelessWidget {
               // Hero Section
               SliverAppBar(
                 expandedHeight: MediaQuery.of(context).size.height * 0.8,
-                backgroundColor: Color(0xFFF5F5F7),
                 elevation: 0,
                 floating: false,
                 pinned: true,
+                leading: Row(
+                  children: [
+                    Consumer<ThemeProvider>(
+                      builder: (context, themeProvider, child) {
+                        return IconButton(
+                          icon: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (Widget child, Animation<double> animation) {
+                              return RotationTransition(turns: animation, child: child);
+                            },
+                            child: themeProvider.themeMode == ThemeMode.light
+                                ? const Icon(Icons.dark_mode, key: ValueKey('dark'))
+                                : const Icon(Icons.light_mode, key: ValueKey('light')),                            
+                          ),
+                          onPressed: () {
+                            themeProvider.toggleTheme();
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 flexibleSpace: FlexibleSpaceBar(
                   background: HeroSection(),
                   title: Text(
                     "Flutter Developer",
                     style: TextStyle(
-                      color: Color(0xFF1D1D1F),
                       fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     ),
@@ -78,7 +99,6 @@ class PortfolioHomePage extends StatelessWidget {
               bottom: 20,
               child: FloatingActionButton(
                 onPressed: () => scrollViewModel.scrollToTop(),
-                backgroundColor: Color(0xFF007AFF),
                 child: Icon(Icons.arrow_upward, color: Colors.white),
               ),
             ),
@@ -89,7 +109,7 @@ class PortfolioHomePage extends StatelessWidget {
       bottomNavigationBar: Responsive.isMobile(context)
           ? Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 10.0)],
               ),
               child: BottomNavigationBar(
@@ -97,8 +117,8 @@ class PortfolioHomePage extends StatelessWidget {
                 onTap: (index) => scrollViewModel.scrollToSection(index),
                 backgroundColor: Colors.transparent,
                 type: BottomNavigationBarType.fixed,
-                selectedItemColor: Color(0xFF007AFF),
-                unselectedItemColor: Color(0xFF86868B),
+                selectedItemColor: Theme.of(context).primaryColor,
+                unselectedItemColor: Theme.of(context).textTheme.bodyLarge?.color,
                 elevation: 0,
                 items: [
                   BottomNavigationBarItem(
