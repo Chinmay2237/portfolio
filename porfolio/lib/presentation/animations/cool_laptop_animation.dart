@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:porfolio/presentation/widgets/code_animation.dart';
 
 class CoolLaptopAnimation extends StatefulWidget {
   final ScrollController scrollController;
@@ -69,16 +69,7 @@ class _CoolLaptopAnimationState extends State<CoolLaptopAnimation>
                 ),
                 child: Opacity(
                   opacity: _animation.value,
-                  child: const Center(
-                    child: Text(
-                      'WebApp loading...',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  child: CodeAnimatedBackground(),
                 ),
               ),
             ),
