@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:porfolio/core/utils/responsive.dart';
 import 'package:porfolio/presentation/widgets/about_section.dart';
 import 'package:porfolio/presentation/widgets/contact_section.dart';
 import 'package:porfolio/presentation/widgets/footer_section.dart';
@@ -9,14 +10,13 @@ import 'package:provider/provider.dart';
 import '../view_models/scroll_view_model.dart';
 import '../view_models/portfolio_view_model.dart';
 import '../widgets/hero_section.dart';
-import '../animations/laptop_animation.dart';
+import '../animations/cool_laptop_animation.dart';
 
 class PortfolioHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollViewModel = Provider.of<ScrollViewModel>(context);
     final portfolioViewModel = Provider.of<PortfolioViewModel>(context);
-    final isMobile = MediaQuery.of(context).size.width < 600;
 
     return Scaffold(
       backgroundColor: Color(0xFFF5F5F7),
@@ -27,14 +27,12 @@ class PortfolioHomePage extends StatelessWidget {
             slivers: [
               // Laptop Animation Section
               SliverToBoxAdapter(
-                child: LaptopAnimationSection(),
+                child: CoolLaptopAnimation(scrollController: scrollViewModel.scrollController),
               ),
 
               // Hero Section
               SliverAppBar(
-                expandedHeight: isMobile
-                    ? MediaQuery.of(context).size.height * 0.7
-                    : MediaQuery.of(context).size.height * 0.8,
+                expandedHeight: MediaQuery.of(context).size.height * 0.8,
                 backgroundColor: Color(0xFFF5F5F7),
                 elevation: 0,
                 floating: false,
@@ -88,7 +86,7 @@ class PortfolioHomePage extends StatelessWidget {
       ),
 
       // Bottom Navigation Bar
-      bottomNavigationBar: isMobile
+      bottomNavigationBar: Responsive.isMobile(context)
           ? Container(
               decoration: BoxDecoration(
                 color: Colors.white,
