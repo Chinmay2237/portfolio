@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
-import 'package:porfolio/presentation/animations/realistic_laptop_animation.dart';
+import 'package:porfolio/presentation/animations/flutter_logo_animation.dart';
 import 'package:porfolio/presentation/view_models/theme_provider.dart';
 import 'package:porfolio/presentation/widgets/about_section.dart';
 import 'package:porfolio/presentation/widgets/contact_section.dart';
@@ -26,9 +26,9 @@ class PortfolioHomePage extends StatelessWidget {
           CustomScrollView(
             controller: scrollViewModel.scrollController,
             slivers: [
-              // Laptop Animation Section
+              // Flutter Logo Animation Section
               SliverToBoxAdapter(
-                child: RealisticLaptopAnimation(scrollController: scrollViewModel.scrollController),
+                child: FlutterLogoAnimation(),
               ),
 
               // Hero Section
