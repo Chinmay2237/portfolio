@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
+import 'package:porfolio/presentation/animations/fade_in_animation.dart';
 import 'package:porfolio/presentation/view_models/portfolio_view_model.dart';
 import 'package:provider/provider.dart';
 
@@ -8,100 +9,102 @@ class ResumeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final portfolioViewModel = Provider.of<PortfolioViewModel>(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: Theme.of(context).cardColor,
-      child: Column(
-        children: [
-          // Section Title
-          Text(
-            "My Resume",
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          const SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
+    return FadeInAnimation(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+        color: Theme.of(context).cardColor,
+        child: Column(
+          children: [
+            // Section Title
+            Text(
+              "My Resume",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: 80,
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 60),
+
+            // Main Content
+            Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 1000),
+              padding: const EdgeInsets.all(40),
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).shadowColor.withOpacity(0.1),
+                    blurRadius: 15,
+                    offset: const Offset(0, 8),
+                  ),
                 ],
               ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 60),
-
-          // Main Content
-          Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(maxWidth: 1000),
-            padding: const EdgeInsets.all(40),
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).shadowColor.withOpacity(0.1),
-                  blurRadius: 15,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: portfolioViewModel.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : Column(
-                    children: [
-                      // Header with Download Button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Education & Experience",
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
+              child: portfolioViewModel.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      children: [
+                        // Header with Download Button
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Education & Experience",
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                            ElevatedButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.download_rounded),
+                              label: const Text("Download CV"),
+                              style: ElevatedButton.styleFrom(
+                                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
                                 ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: const Icon(Icons.download_rounded),
-                            label: const Text("Download CV"),
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 50),
+                          ],
+                        ),
+                        const SizedBox(height: 50),
 
-                      // Timeline for Education and Experience
-                      Responsive.isDesktop(context)
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(child: _buildTimeline(context, "Education", portfolioViewModel.education)),
-                                const SizedBox(width: 50),
-                                Expanded(child: _buildTimeline(context, "Experience", portfolioViewModel.experiences)),
-                              ],
-                            )
-                          : Column(
-                              children: [
-                                _buildTimeline(context, "Education", portfolioViewModel.education),
-                                const SizedBox(height: 40),
-                                _buildTimeline(context, "Experience", portfolioViewModel.experiences),
-                              ],
-                            ),
-                    ],
-                  ),
-          ),
-        ],
+                        // Timeline for Education and Experience
+                        Responsive.isDesktop(context)
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(child: _buildTimeline(context, "Education", portfolioViewModel.education)),
+                                  const SizedBox(width: 50),
+                                  Expanded(child: _buildTimeline(context, "Experience", portfolioViewModel.experiences)),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  _buildTimeline(context, "Education", portfolioViewModel.education),
+                                  const SizedBox(height: 40),
+                                  _buildTimeline(context, "Experience", portfolioViewModel.experiences),
+                                ],
+                              ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
       ),
     );
   }

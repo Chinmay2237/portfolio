@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
+import 'package:porfolio/presentation/animations/fade_in_animation.dart';
 
 class ContactSection extends StatelessWidget {
   // A simple data structure for contact information
@@ -11,53 +12,55 @@ class ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: [
-          // Section Title
-          Text(
-            "Get In Touch",
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          const SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
+    return FadeInAnimation(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            // Section Title
+            Text(
+              "Get In Touch",
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: 80,
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 60),
+
+            // Main Content
+            Container(
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 1100),
+              padding: const EdgeInsets.all(50),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).shadowColor.withOpacity(0.1),
+                    blurRadius: 15,
+                    offset: const Offset(0, 8),
+                  ),
                 ],
               ),
-              borderRadius: BorderRadius.circular(2),
+              child: Responsive.isDesktop(context)
+                  ? _buildDesktopLayout(context)
+                  : _buildMobileLayout(context),
             ),
-          ),
-          const SizedBox(height: 60),
-
-          // Main Content
-          Container(
-            width: double.infinity,
-            constraints: const BoxConstraints(maxWidth: 1100),
-            padding: const EdgeInsets.all(50),
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).shadowColor.withOpacity(0.1),
-                  blurRadius: 15,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Responsive.isDesktop(context)
-                ? _buildDesktopLayout(context)
-                : _buildMobileLayout(context),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

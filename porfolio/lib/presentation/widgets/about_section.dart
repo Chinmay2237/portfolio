@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
+import 'package:porfolio/presentation/animations/fade_in_animation.dart';
 
 class AboutSection extends StatelessWidget {
-  // A simple data structure for skills
   final List<Map<String, dynamic>> skills = [
     {'icon': Icons.phone_iphone, 'text': 'Flutter'},
     {'icon': Icons.code, 'text': 'Dart'},
@@ -14,37 +14,39 @@ class AboutSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: [
-          // Section Title
-          Text(
-            "About Me",
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          const SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(2),
+    return FadeInAnimation(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            // Section Title
+            Text(
+              "About Me",
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-          ),
-          const SizedBox(height: 50),
+            const SizedBox(height: 20),
+            Container(
+              width: 80,
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 50),
 
-          // Main content with responsive layout
-          Responsive.isDesktop(context)
-              ? _buildDesktopLayout(context)
-              : _buildMobileLayout(context),
-        ],
+            // Main content with responsive layout
+            Responsive.isDesktop(context)
+                ? _buildDesktopLayout(context)
+                : _buildMobileLayout(context),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:porfolio/presentation/animations/fade_in_animation.dart';
 import 'package:provider/provider.dart';
 import '../view_models/portfolio_view_model.dart';
 
@@ -7,47 +8,49 @@ class ProjectsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final portfolioViewModel = Provider.of<PortfolioViewModel>(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Column(
-        children: [
-          // Section Title
-          Text(
-            "Featured Projects",
-            style: Theme.of(context).textTheme.displayMedium,
-          ),
-          const SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(2),
+    return FadeInAnimation(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Column(
+          children: [
+            // Section Title
+            Text(
+              "Featured Projects",
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-          ),
-          const SizedBox(height: 60),
-
-          // Project Cards
-          portfolioViewModel.isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  child: Wrap(
-                    spacing: 40,
-                    runSpacing: 40,
-                    alignment: WrapAlignment.center,
-                    children: portfolioViewModel.projects
-                        .map((project) => ProjectCard(project: project))
-                        .toList(),
-                  ),
+            const SizedBox(height: 20),
+            Container(
+              width: 80,
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.primary,
+                    Theme.of(context).colorScheme.secondary,
+                  ],
                 ),
-        ],
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 60),
+
+            // Project Cards
+            portfolioViewModel.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1200),
+                    child: Wrap(
+                      spacing: 40,
+                      runSpacing: 40,
+                      alignment: WrapAlignment.center,
+                      children: portfolioViewModel.projects
+                          .map((project) => ProjectCard(project: project))
+                          .toList(),
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }
