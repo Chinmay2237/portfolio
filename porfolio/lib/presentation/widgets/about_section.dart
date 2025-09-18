@@ -1,380 +1,146 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
-import 'fade_in_widget.dart';
-import 'skill_card.dart';
 
 class AboutSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Responsive(
-      mobile: AboutSectionMobile(),
-      tablet: AboutSectionTablet(),
-      desktop: AboutSectionDesktop(),
-    );
-  }
-}
+  // A simple data structure for skills
+  final List<Map<String, dynamic>> skills = [
+    {'icon': Icons.phone_iphone, 'text': 'Flutter'},
+    {'icon': Icons.code, 'text': 'Dart'},
+    {'icon': Icons.web, 'text': 'Responsive Design'},
+    {'icon': Icons.cloud_queue, 'text': 'Firebase'},
+    {'icon': Icons.api, 'text': 'API Integration'},
+    {'icon': Icons.storage, 'text': 'Git'},
+  ];
 
-class AboutSectionMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 20,
-      ),
-      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
-          FadeInWidget(
-            child: Text(
-              "About Me",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+          // Section Title
+          Text(
+            "About Me",
+            style: Theme.of(context).textTheme.displayMedium,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Container(
             width: 80,
             height: 4,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.secondary,
+                ],
               ),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          SizedBox(height: 40),
-          _buildAboutText(context),
-          SizedBox(height: 30),
-          _buildProfileImage(context),
+          const SizedBox(height: 50),
+
+          // Main content with responsive layout
+          Responsive.isDesktop(context)
+              ? _buildDesktopLayout(context)
+              : _buildMobileLayout(context),
         ],
       ),
     );
   }
 
+  // Layout for desktop screens
+  Widget _buildDesktopLayout(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(child: _buildAboutText(context)),
+        const SizedBox(width: 50),
+        Expanded(child: _buildProfileImageWithSkills(context)),
+      ],
+    );
+  }
+
+  // Layout for mobile and tablet screens
+  Widget _buildMobileLayout(BuildContext context) {
+    return Column(
+      children: [
+        _buildProfileImageWithSkills(context),
+        const SizedBox(height: 40),
+        _buildAboutText(context),
+      ],
+    );
+  }
+
+  // The main text content about me
   Widget _buildAboutText(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Hello! I'm a passionate Flutter developer with 5+ years of expertise in building cross-platform applications. I love creating intuitive and beautiful user interfaces with smooth animations.",
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           "With a strong foundation in Dart programming and experience with various state management solutions, I develop robust and scalable applications that work seamlessly on both iOS and Android, as well as web and desktop platforms.",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        SizedBox(height: 30),
-        Wrap(
-          spacing: 15,
-          runSpacing: 15,
-          children: [
-            SkillCard(
-              icon: Icons.phone_iphone,
-              text: "Flutter",
-              description: '',
-            ),
-            SkillCard(icon: Icons.code, text: "Dart", description: ''),
-            SkillCard(
-              icon: Icons.web,
-              text: "Responsive Design",
-              description: '',
-            ),
-            SkillCard(icon: Icons.cloud, text: "Firebase", description: ''),
-            SkillCard(
-              icon: Icons.api,
-              text: "API Integration",
-              description: '',
-            ),
-            SkillCard(icon: Icons.storage, text: "Git", description: ''),
-          ],
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
         ),
       ],
     );
   }
 
-  Widget _buildProfileImage(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 400,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: NetworkImage(
-                'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80',
-              ),
-              fit: BoxFit.cover,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, 5),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 15,
-          left: 15,
-          right: -15,
-          bottom: -15,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF007AFF), width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AboutSectionTablet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 40,
-      ),
-      color: Colors.white,
-      child: Column(
-        children: [
-          FadeInWidget(
-            child: Text(
-              "About Me",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
-              ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          SizedBox(height: 40),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _buildAboutText(context)),
-              SizedBox(width: 50),
-              Expanded(child: _buildProfileImage(context)),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAboutText(BuildContext context) {
+  // The profile image and skill cards
+  Widget _buildProfileImageWithSkills(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Hello! I'm a passionate Flutter developer with 5+ years of expertise in building cross-platform applications. I love creating intuitive and beautiful user interfaces with smooth animations.",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        SizedBox(height: 20),
-        Text(
-          "With a strong foundation in Dart programming and experience with various state management solutions, I develop robust and scalable applications that work seamlessly on both iOS and Android, as well as web and desktop platforms.",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        SizedBox(height: 30),
-        Wrap(
-          spacing: 15,
-          runSpacing: 15,
-          children: [
-            SkillCard(
-              icon: Icons.phone_iphone,
-              text: "Flutter",
-              description: '',
-            ),
-            SkillCard(icon: Icons.code, text: "Dart", description: ''),
-            SkillCard(
-              icon: Icons.web,
-              text: "Responsive Design",
-              description: '',
-            ),
-            SkillCard(icon: Icons.cloud, text: "Firebase", description: ''),
-            SkillCard(
-              icon: Icons.api,
-              text: "API Integration",
-              description: '',
-            ),
-            SkillCard(icon: Icons.storage, text: "Git", description: ''),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileImage(BuildContext context) {
-    return Stack(
-      children: [
+        // Profile Image
         Container(
-          width: double.infinity,
-          height: 400,
+          width: 250,
+          height: 250,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
+            shape: BoxShape.circle,
+            image: const DecorationImage(
               image: NetworkImage(
-                'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80',
+                'https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
               ),
               fit: BoxFit.cover,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, 5),
+                color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                blurRadius: 15,
+                offset: const Offset(0, 10),
               ),
             ],
           ),
         ),
-        Positioned(
-          top: 15,
-          left: 15,
-          right: -15,
-          bottom: -15,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF007AFF), width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+        const SizedBox(height: 40),
 
-class AboutSectionDesktop extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 40,
-      ),
-      color: Colors.white,
-      child: Column(
-        children: [
-          FadeInWidget(
-            child: Text(
-              "About Me",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
-              ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          SizedBox(height: 40),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _buildAboutText(context)),
-              SizedBox(width: 50),
-              Expanded(child: _buildProfileImage(context)),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAboutText(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Hello! I'm a passionate Flutter developer with 5+ years of expertise in building cross-platform applications. I love creating intuitive and beautiful user interfaces with smooth animations.",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        SizedBox(height: 20),
-        Text(
-          "With a strong foundation in Dart programming and experience with various state management solutions, I develop robust and scalable applications that work seamlessly on both iOS and Android, as well as web and desktop platforms.",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
-        SizedBox(height: 30),
+        // Skill Cards
         Wrap(
           spacing: 15,
           runSpacing: 15,
-          children: [
-            SkillCard(
-              icon: Icons.phone_iphone,
-              text: "Flutter",
-              description: '',
-            ),
-            SkillCard(icon: Icons.code, text: "Dart", description: ''),
-            SkillCard(
-              icon: Icons.web,
-              text: "Responsive Design",
-              description: '',
-            ),
-            SkillCard(icon: Icons.cloud, text: "Firebase", description: ''),
-            SkillCard(
-              icon: Icons.api,
-              text: "API Integration",
-              description: '',
-            ),
-            SkillCard(icon: Icons.storage, text: "Git", description: ''),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProfileImage(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 400,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            image: DecorationImage(
-              image: NetworkImage(
-                'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80',
+          alignment: WrapAlignment.center,
+          children: skills.map((skill) {
+            return Card(
+              elevation: 3,
+              shadowColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              fit: BoxFit.cover,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, 5),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Icon(skill['icon'], color: Theme.of(context).colorScheme.primary, size: 30),
+                    const SizedBox(height: 8),
+                    Text(skill['text'], style: Theme.of(context).textTheme.bodyMedium),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 15,
-          left: 15,
-          right: -15,
-          bottom: -15,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Color(0xFF007AFF), width: 2),
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ],
     );

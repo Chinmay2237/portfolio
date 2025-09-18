@@ -1,121 +1,137 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
-import 'package:porfolio/presentation/widgets/contact_form.dart';
-import 'package:porfolio/presentation/widgets/fade_in_widget.dart';
-
-import 'contact_info_item.dart';
 
 class ContactSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Responsive(
-      mobile: ContactSectionMobile(),
-      tablet: ContactSectionTablet(),
-      desktop: ContactSectionDesktop(),
-    );
-  }
-}
+  // A simple data structure for contact information
+  final List<Map<String, dynamic>> contactInfo = [
+    {'icon': Icons.email_rounded, 'title': 'Email', 'value': 'alex.johnson@example.com'},
+    {'icon': Icons.phone_rounded, 'title': 'Phone', 'value': '+1 (555) 123-4567'},
+    {'icon': Icons.location_on_rounded, 'title': 'Location', 'value': 'San Francisco, CA'},
+  ];
 
-class ContactSectionMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 20,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
-        ),
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 40),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Column(
         children: [
-          FadeInWidget(
-            child: Text(
-              "Get In Touch",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
+          // Section Title
+          Text(
+            "Get In Touch",
+            style: Theme.of(context).textTheme.displayMedium,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Container(
             width: 80,
             height: 4,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
+                colors: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.secondary,
+                ],
               ),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          SizedBox(height: 60),
+          const SizedBox(height: 60),
+
+          // Main Content
           Container(
             width: double.infinity,
-            padding: EdgeInsets.all(30),
+            constraints: const BoxConstraints(maxWidth: 1100),
+            padding: const EdgeInsets.all(50),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
+                  color: Theme.of(context).shadowColor.withOpacity(0.1),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
                 ),
               ],
             ),
-            child: Column(
-              children: [
-                Text(
-                  "Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Color(0xFF86868B),
-                    height: 1.6,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 40),
-                Wrap(
-                  spacing: 30,
-                  runSpacing: 30,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    ContactInfoItem(
-                      icon: Icons.email,
-                      title: "Email",
-                      value: "alex.johnson@example.com",
-                      onTap: () {
-                        // launchUrl(Uri.parse("mailto:alex.johnson@example.com"));
-                      },
+            child: Responsive.isDesktop(context)
+                ? _buildDesktopLayout(context)
+                : _buildMobileLayout(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Layout for desktop screens
+  Widget _buildDesktopLayout(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(flex: 2, child: _buildContactInfo(context)),
+        const SizedBox(width: 50),
+        Expanded(flex: 3, child: ContactForm()),
+      ],
+    );
+  }
+
+  // Layout for mobile and tablet screens
+  Widget _buildMobileLayout(BuildContext context) {
+    return Column(
+      children: [
+        _buildContactInfo(context),
+        const SizedBox(height: 50),
+        ContactForm(),
+      ],
+    );
+  }
+
+  // Builds the contact information section
+  Widget _buildContactInfo(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Let's Connect",
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
+        const SizedBox(height: 20),
+        Text(
+          "Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!",
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 40),
+        ...contactInfo.map((info) => ContactInfoItem(info: info)).toList(),
+      ],
+    );
+  }
+}
+
+// A single item for contact information
+class ContactInfoItem extends StatelessWidget {
+  final Map<String, dynamic> info;
+
+  const ContactInfoItem({Key? key, required this.info}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 25.0),
+      child: Row(
+        children: [
+          Icon(info['icon'], color: Theme.of(context).colorScheme.primary, size: 30),
+          const SizedBox(width: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                info['title'],
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
-                    ContactInfoItem(
-                      icon: Icons.phone,
-                      title: "Phone",
-                      value: "+1 (555) 123-4567",
-                      onTap: () {
-                        // launchUrl(Uri.parse("tel:+15551234567"));
-                      },
-                    ),
-                    ContactInfoItem(
-                      icon: Icons.location_on,
-                      title: "Location",
-                      value: "San Francisco, CA",
-                      onTap: () {
-                        // launchUrl(
-                        //   Uri.parse(
-                        //     "https://maps.google.com/?q=San+Francisco,+CA",
-                        //   ),
-                        // );
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                ContactForm(),
-              ],
-            ),
+              ),
+              const SizedBox(height: 5),
+              Text(info['value'], style: Theme.of(context).textTheme.bodyLarge),
+            ],
           ),
         ],
       ),
@@ -123,229 +139,112 @@ class ContactSectionMobile extends StatelessWidget {
   }
 }
 
-class ContactSectionTablet extends StatelessWidget {
+// The contact form
+class ContactForm extends StatefulWidget {
+  @override
+  _ContactFormState createState() => _ContactFormState();
+}
+
+class _ContactFormState extends State<ContactForm> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _messageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 40,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
-        ),
-      ),
+    return Form(
+      key: _formKey,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FadeInWidget(
-            child: Text(
-              "Get In Touch",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
+          // Name and Email fields
+          Row(
+            children: [
+              Expanded(
+                child: _buildTextFormField(
+                  controller: _nameController,
+                  labelText: "Your Name",
+                  validator: (value) => (value == null || value.isEmpty) ? 'Please enter your name' : null,
+                ),
               ),
-              borderRadius: BorderRadius.circular(2),
-            ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _buildTextFormField(
+                  controller: _emailController,
+                  labelText: "Your Email",
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Please enter your email';
+                    if (!value.contains('@')) return 'Please enter a valid email';
+                    return null;
+                  },
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 60),
-          Container(
-            width: double.infinity,
-            constraints: BoxConstraints(maxWidth: 800),
-            padding: EdgeInsets.all(40),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
+          const SizedBox(height: 20),
+
+          // Message field
+          _buildTextFormField(
+            controller: _messageController,
+            labelText: "Your Message",
+            maxLines: 5,
+            validator: (value) => (value == null || value.isEmpty) ? 'Please enter your message' : null,
+          ),
+          const SizedBox(height: 30),
+
+          // Send Message Button
+          Align(
+            alignment: Alignment.bottomRight,
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Message sent successfully!'), backgroundColor: Colors.green),
+                  );
+                  _formKey.currentState!.reset();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Text(
-                  "Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Color(0xFF86868B),
-                    height: 1.6,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 40),
-                Wrap(
-                  spacing: 30,
-                  runSpacing: 30,
-                  alignment: WrapAlignment.center,
-                  children: [
-                    ContactInfoItem(
-                      icon: Icons.email,
-                      title: "Email",
-                      value: "alex.johnson@example.com",
-                      onTap: () {
-                        // launchUrl(Uri.parse("mailto:alex.johnson@example.com"));
-                      },
-                    ),
-                    ContactInfoItem(
-                      icon: Icons.phone,
-                      title: "Phone",
-                      value: "+1 (555) 123-4567",
-                      onTap: () {
-                        // launchUrl(Uri.parse("tel:+15551234567"));
-                      },
-                    ),
-                    ContactInfoItem(
-                      icon: Icons.location_on,
-                      title: "Location",
-                      value: "San Francisco, CA",
-                      onTap: () {
-                        // launchUrl(
-                        //   Uri.parse(
-                        //     "https://maps.google.com/?q=San+Francisco,+CA",
-                        //   ),
-                        // );
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 40),
-                ContactForm(),
-              ],
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              ),
+              child: const Text("Send Message"),
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class ContactSectionDesktop extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: 40,
-      ),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFF8F9FA), Color(0xFFE9ECEF)],
+  // Helper to build styled text form fields
+  Widget _buildTextFormField({
+    required TextEditingController controller,
+    required String labelText,
+    required FormFieldValidator<String> validator,
+    int maxLines = 1,
+  }) {
+    return TextFormField(
+      controller: controller,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        labelText: labelText,
+        filled: true,
+        fillColor: Theme.of(context).scaffoldBackgroundColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      child: Column(
-        children: [
-          FadeInWidget(
-            child: Text(
-              "Get In Touch",
-              style: Theme.of(context).textTheme.displayMedium,
-            ),
-          ),
-          SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 4,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF007AFF), Color(0xFF5856D6)],
-              ),
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          SizedBox(height: 60),
-          Container(
-            width: double.infinity,
-            constraints: BoxConstraints(maxWidth: 1000),
-            padding: EdgeInsets.all(50),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Let's Connect",
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        "Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF86868B),
-                          height: 1.6,
-                        ),
-                      ),
-                      SizedBox(height: 40),
-                      ContactInfoItem(
-                        icon: Icons.email,
-                        title: "Email",
-                        value: "alex.johnson@example.com",
-                        onTap: () {
-                          // launchUrl(Uri.parse("mailto:alex.johnson@example.com"));
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      ContactInfoItem(
-                        icon: Icons.phone,
-                        title: "Phone",
-                        value: "+1 (555) 123-4567",
-                        onTap: () {
-                          // launchUrl(Uri.parse("tel:+15551234567"));
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      ContactInfoItem(
-                        icon: Icons.location_on,
-                        title: "Location",
-                        value: "San Francisco, CA",
-                        onTap: () {
-                          // launchUrl(
-                          //   Uri.parse(
-                          //     "https://maps.google.com/?q=San+Francisco,+CA",
-                          //   ),
-                          // );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 50),
-                Expanded(
-                  flex: 3,
-                  child: ContactForm(),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      validator: validator,
     );
   }
 }
