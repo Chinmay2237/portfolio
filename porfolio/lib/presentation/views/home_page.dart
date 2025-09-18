@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:porfolio/core/utils/responsive.dart';
+import 'package:porfolio/presentation/animations/realistic_laptop_animation.dart';
 import 'package:porfolio/presentation/view_models/theme_provider.dart';
 import 'package:porfolio/presentation/widgets/about_section.dart';
 import 'package:porfolio/presentation/widgets/contact_section.dart';
@@ -11,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../view_models/scroll_view_model.dart';
 import '../view_models/portfolio_view_model.dart';
 import '../widgets/hero_section.dart';
-import '../animations/cool_laptop_animation.dart';
 
 class PortfolioHomePage extends StatelessWidget {
   @override
@@ -28,7 +28,7 @@ class PortfolioHomePage extends StatelessWidget {
             slivers: [
               // Laptop Animation Section
               SliverToBoxAdapter(
-                child: CoolLaptopAnimation(scrollController: scrollViewModel.scrollController),
+                child: RealisticLaptopAnimation(scrollController: scrollViewModel.scrollController),
               ),
 
               // Hero Section
@@ -37,28 +37,29 @@ class PortfolioHomePage extends StatelessWidget {
                 elevation: 0,
                 floating: false,
                 pinned: true,
-                leading: Row(
-                  children: [
-                    Consumer<ThemeProvider>(
-                      builder: (context, themeProvider, child) {
-                        return IconButton(
-                          icon: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return RotationTransition(turns: animation, child: child);
-                            },
-                            child: themeProvider.themeMode == ThemeMode.light
-                                ? const Icon(Icons.dark_mode, key: ValueKey('dark'))
-                                : const Icon(Icons.light_mode, key: ValueKey('light')),                            
-                          ),
-                          onPressed: () {
-                            themeProvider.toggleTheme();
+                actions: [
+                  TextButton(onPressed: () => scrollViewModel.scrollToSection(0), child: Text("About")),
+                  TextButton(onPressed: () => scrollViewModel.scrollToSection(2), child: Text("Projects")),
+                  TextButton(onPressed: () => scrollViewModel.scrollToSection(4), child: Text("Contact")),
+                  Consumer<ThemeProvider>(
+                    builder: (context, themeProvider, child) {
+                      return IconButton(
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (Widget child, Animation<double> animation) {
+                            return RotationTransition(turns: animation, child: child);
                           },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                          child: themeProvider.themeMode == ThemeMode.light
+                              ? const Icon(Icons.dark_mode, key: ValueKey('dark'))
+                              : const Icon(Icons.light_mode, key: ValueKey('light')),                            
+                        ),
+                        onPressed: () {
+                          themeProvider.toggleTheme();
+                        },
+                      );
+                    },
+                  ),
+                ],
                 flexibleSpace: FlexibleSpaceBar(
                   background: HeroSection(),
                   title: Text(
